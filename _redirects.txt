@@ -1,0 +1,7 @@
+SPA Redirect Rule
+
+This ensures that if a user refreshes the page on a sub-route,
+
+Netlify serves index.html instead of a 404.
+
+/* /index.html 200
