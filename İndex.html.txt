@@ -36,7 +36,7 @@
         }
     </script>
 
-    <!-- GSAP -->
+    <!-- Animation Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
@@ -53,11 +53,13 @@
             height: 100vh;
         }
 
+        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #0a0a0a; }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #FFD700; }
 
+        /* Typography & Effects */
         .text-gradient-gold {
             background: linear-gradient(to right, #FFD700, #F59E0B);
             -webkit-background-clip: text;
@@ -77,6 +79,36 @@
         .btn-line { width: 0%; transition: width 0.3s ease; }
         .group:hover .btn-line { width: 100%; }
 
+        /* Background Image Slider Logic */
+        .hero-bg-container {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            background-color: #000;
+        }
+        .hero-bg-image {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+            transform: scale(1.05);
+            transition: opacity 2s ease-in-out, transform 8s linear;
+        }
+        .hero-bg-image.active {
+            opacity: 0.5;
+            transform: scale(1);
+        }
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, transparent 0%, rgba(5,5,5,0.8) 100%),
+                        linear-gradient(to bottom, rgba(5,5,5,0.2) 0%, rgba(5,5,5,1) 100%);
+            z-index: 1;
+        }
+
+        /* Form Styling */
         input, select, textarea {
             background: transparent !important;
             border: 1px solid #27272a !important;
@@ -88,6 +120,7 @@
             box-shadow: 0 0 10px rgba(255, 215, 0, 0.1);
         }
 
+        /* Map Styling */
         .map-container iframe {
             filter: grayscale(1) invert(0.9) contrast(1.2);
             mix-blend-mode: screen;
@@ -102,22 +135,21 @@
 </head>
 <body class="loading font-sans selection:bg-mb-yellow selection:text-mb-black">
 
+    <!-- Preloader -->
     <div id="loader" class="fixed inset-0 bg-mb-black flex items-center justify-center flex-col">
-        <canvas id="loader-canvas" class="absolute inset-0 w-full h-full opacity-60"></canvas>
-        <div class="relative z-10 overflow-hidden">
+        <div class="relative z-10 overflow-hidden text-center">
             <h1 class="loader-text text-6xl md:text-9xl font-display font-bold text-mb-white tracking-tighter opacity-0 translate-y-10">
                 MB<span class="text-mb-yellow">Fit</span>club
             </h1>
         </div>
         <div class="mt-4 overflow-hidden">
-            <p class="loader-sub text-mb-gold text-sm uppercase tracking-[0.3em] opacity-0 translate-y-5">
-                Öz Yükleniyor
-            </p>
+            <p class="loader-sub text-mb-gold text-sm uppercase tracking-[0.3em] opacity-0 translate-y-5">Öz Yükleniyor</p>
         </div>
     </div>
 
+    <!-- Navigation -->
     <nav class="fixed top-0 w-full z-50 px-6 py-6 flex justify-between items-center mix-blend-difference text-mb-white transition-all duration-300" id="navbar">
-        <div class="font-display font-bold text-2xl tracking-tight">MB<span class="text-mb-yellow">.</span></div>
+        <div class="font-display font-bold text-2xl tracking-tight">MBFitclub<span class="text-mb-yellow">.</span></div>
         
         <div class="hidden md:flex gap-12 text-sm uppercase tracking-widest font-medium">
             <a href="#philosophy" class="hover:text-mb-yellow transition-colors duration-300">Felsefe</a>
@@ -127,11 +159,12 @@
         </div>
 
         <button id="menu-btn" class="md:hidden z-50 group flex flex-col gap-1.5 w-8">
-            <span class="w-full h-[2px] bg-white transition-all group-hover:bg-mb-yellow origin-right"></span>
-            <span class="w-2/3 h-[2px] bg-white transition-all group-hover:bg-mb-yellow group-hover:w-full ml-auto origin-right"></span>
+            <span class="w-full h-[2px] bg-white transition-all group-hover:bg-mb-yellow"></span>
+            <span class="w-2/3 h-[2px] bg-white transition-all group-hover:bg-mb-yellow group-hover:w-full ml-auto"></span>
         </button>
     </nav>
 
+    <!-- Mobile Menu Overlay -->
     <div id="mobile-menu" class="mobile-menu-overlay fixed inset-0 bg-mb-black z-40 flex flex-col justify-center items-center gap-8">
         <a href="#philosophy" class="mobile-link text-4xl font-display font-bold hover:text-mb-yellow transition-colors">Felsefe</a>
         <a href="#classes" class="mobile-link text-4xl font-display font-bold hover:text-mb-yellow transition-colors">Dersler</a>
@@ -139,11 +172,20 @@
         <a href="#location" class="mobile-link text-4xl font-display font-bold hover:text-mb-yellow transition-colors">Konum</a>
     </div>
 
+    <!-- Main Content -->
     <main id="main-content" class="relative opacity-0">
         
+        <!-- Hero Section -->
         <section class="relative h-screen w-full flex items-center justify-center overflow-hidden">
-            <canvas id="hero-canvas" class="absolute inset-0 w-full h-full opacity-40"></canvas>
-            <div class="relative z-10 text-center px-4 max-w-5xl">
+            <div class="hero-bg-container">
+                <div class="hero-bg-image active" style="background-image: url('fitclubfrontpage.jpg');"></div>
+                <div class="hero-bg-image" style="background-image: url('fitclub.jpg');"></div>
+                <div class="hero-bg-image" style="background-image: url('fitclub2.jpg');"></div>
+                <div class="hero-bg-image" style="background-image: url('fitclub3.jpg');"></div>
+                <div class="hero-overlay"></div>
+            </div>
+            
+            <div class="relative z-20 text-center px-4 max-w-5xl">
                 <div class="hero-line overflow-hidden mb-2">
                     <h2 class="text-mb-gold text-sm md:text-base uppercase tracking-[0.4em] font-medium translate-y-full">Sınırlarını YENİDEN TANIMLA</h2>
                 </div>
@@ -168,6 +210,7 @@
             </div>
         </section>
 
+        <!-- Philosophy Section -->
         <section id="philosophy" class="py-24 md:py-32 px-6 bg-mb-dark border-t border-mb-gray/20">
             <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
                 <div class="reveal-trigger">
@@ -175,46 +218,61 @@
                     <h2 class="text-4xl md:text-6xl font-display font-bold mb-8 leading-tight">Sessizlikte <span class="italic text-mb-gray">Güç.</span> <br> Odakta <span class="text-mb-yellow">Kuvvet.</span></h2>
                     <p class="text-gray-400 leading-relaxed mb-8 font-light text-lg">Fitness'ın bir meditasyon biçimi olduğuna inanıyoruz. Alanımız dikkat dağıtıcı unsurlardan arındırılmış, berrak ve odaklıdır.</p>
                 </div>
-                <div class="relative h-[400px] w-full bg-mb-black reveal-image overflow-hidden">
-                    <div class="absolute inset-0 bg-gradient-radial from-mb-yellow/10 to-transparent opacity-50"></div>
+                <div class="relative h-[500px] w-full bg-mb-black reveal-image overflow-hidden border border-mb-gray/10 rounded-lg">
+                    <div class="absolute inset-0 bg-cover bg-center opacity-40 mix-blend-screen" style="background-image: url('grafik.png');"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-mb-black via-transparent to-transparent"></div>
                 </div>
             </div>
         </section>
 
+        <!-- Classes -->
         <section id="classes" class="py-24 md:py-32 px-6 bg-mb-black relative">
             <div class="max-w-7xl mx-auto">
                 <div class="grid md:grid-cols-3 gap-6">
-                    <div class="group bg-mb-dark p-8 border border-mb-gray/10 hover:border-mb-yellow h-[350px] flex flex-col justify-end card-reveal">
-                        <h3 class="text-2xl font-display font-bold mb-2">Demir Zen</h3>
-                        <p class="text-gray-500 text-sm">Ağırlık kaldırma farkındalıkla buluşuyor.</p>
+                    <div class="group bg-mb-dark p-8 border border-mb-gray/10 hover:border-mb-yellow h-[450px] flex flex-col justify-end card-reveal relative overflow-hidden transition-all duration-500">
+                        <div class="absolute inset-0 bg-cover bg-center opacity-30 transition-transform duration-1000 group-hover:scale-110 group-hover:opacity-50" style="background-image: url('fitclub.jpg');"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-mb-black via-transparent to-transparent"></div>
+                        <div class="relative z-10">
+                            <h3 class="text-2xl font-display font-bold mb-2">Demir Zen</h3>
+                            <p class="text-gray-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0">Ağırlık kaldırma farkındalıkla buluşuyor. Kontrollü hareketler, mutlak odak.</p>
+                        </div>
                     </div>
-                    <div class="group bg-mb-dark p-8 border border-mb-gray/10 hover:border-mb-yellow h-[350px] flex flex-col justify-end card-reveal">
-                        <h3 class="text-2xl font-display font-bold mb-2">Akış Hali</h3>
-                        <p class="text-gray-500 text-sm">Ritmik yüksek yoğunluklu antrenman.</p>
+                    <div class="group bg-mb-dark p-8 border border-mb-gray/10 hover:border-mb-yellow h-[450px] flex flex-col justify-end card-reveal relative overflow-hidden transition-all duration-500">
+                        <div class="absolute inset-0 bg-cover bg-center opacity-30 transition-transform duration-1000 group-hover:scale-110 group-hover:opacity-50" style="background-image: url('fitclub2.jpg');"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-mb-black via-transparent to-transparent"></div>
+                        <div class="relative z-10">
+                            <h3 class="text-2xl font-display font-bold mb-2">Akış Hali</h3>
+                            <p class="text-gray-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0">Sınırlarınızı ritmik olarak zorlamak için tasarlanmış yüksek yoğunluklu antrenman.</p>
+                        </div>
                     </div>
-                    <div class="group bg-mb-dark p-8 border border-mb-gray/10 hover:border-mb-yellow h-[350px] flex flex-col justify-end card-reveal">
-                        <h3 class="text-2xl font-display font-bold mb-2">Merkez Denge</h3>
-                        <p class="text-gray-500 text-sm">Sütununuzu güçlendirmek için temel çalışma.</p>
+                    <div class="group bg-mb-dark p-8 border border-mb-gray/10 hover:border-mb-yellow h-[450px] flex flex-col justify-end card-reveal relative overflow-hidden transition-all duration-500">
+                        <div class="absolute inset-0 bg-cover bg-center opacity-30 transition-transform duration-1000 group-hover:scale-110 group-hover:opacity-50" style="background-image: url('fitclub3.jpg');"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-mb-black via-transparent to-transparent"></div>
+                        <div class="relative z-10">
+                            <h3 class="text-2xl font-display font-bold mb-2">Merkez Denge</h3>
+                            <p class="text-gray-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0">Dengenizi bulmak ve vücut bütünlüğünüzü güçlendirmek için temel çalışma.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
+        <!-- Membership Form -->
         <section id="membership" class="py-24 md:py-32 px-6 bg-mb-dark border-t border-mb-gray/20">
             <div class="max-w-4xl mx-auto">
                 <div class="text-center mb-16">
-                    <h2 class="text-4xl md:text-6xl font-display font-bold">Bize Katılın</h2>
+                    <h3 class="text-mb-gold text-sm uppercase tracking-[0.3em] mb-4">Üyelik</h3>
+                    <h2 class="text-4xl md:text-6xl font-display font-bold mb-6">Bize Katılın</h2>
+                    <p class="text-gray-400">Formu doldurun, sizinle iletişime geçelim.</p>
                 </div>
-                <!-- NETLIFY FORM -->
-                <form name="membership-request" method="POST" data-netlify="true" class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-mb-black p-8 border border-mb-gray/10">
-                    <input type="hidden" name="form-name" value="membership-request" />
+                <form class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-mb-black p-8 border border-mb-gray/10">
                     <div class="flex flex-col gap-2">
                         <label class="text-xs uppercase text-mb-gold font-bold">Ad Soyad</label>
-                        <input type="text" name="name" required class="p-4 text-white">
+                        <input type="text" placeholder="Ad Soyad" class="p-4 text-white">
                     </div>
                     <div class="flex flex-col gap-2">
                         <label class="text-xs uppercase text-mb-gold font-bold">E-Posta</label>
-                        <input type="email" name="email" required class="p-4 text-white">
+                        <input type="email" placeholder="email@ornek.com" class="p-4 text-white">
                     </div>
                     <div class="md:col-span-2">
                         <button type="submit" class="w-full py-5 bg-mb-yellow text-mb-black font-bold uppercase tracking-widest hover:bg-mb-gold transition-colors">Başvuruyu Gönder</button>
@@ -223,39 +281,78 @@
             </div>
         </section>
 
+        <!-- Map Section -->
         <section id="location" class="py-24 md:py-32 px-6 bg-mb-black">
             <div class="max-w-7xl mx-auto grid md:grid-cols-12 gap-12 items-center">
-                <div class="md:col-span-5">
+                <div class="md:col-span-5 reveal-trigger">
                     <h2 class="text-4xl font-display font-bold mb-6">Konumumuz</h2>
-                    <p class="text-gray-400 mb-8">İsmet, Körfez, İnönü Blv. No: 30 B İç Kapı No: 20, 55270 Atakum/Samsun</p>
+                    <p class="text-gray-400 mb-8 leading-relaxed">
+                        İsmet, Körfez, İnönü Blv. No: 30 B <br>
+                        İç Kapı No: 20, 55270 Atakum/Samsun
+                    </p>
+                    <a href="https://maps.app.goo.gl/95u3yV6N6Y9X2m7q6" target="_blank" class="inline-flex items-center gap-2 text-mb-yellow text-sm font-bold uppercase tracking-widest">
+                        Yol Tarifi Al 
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                    </a>
                 </div>
-                <div class="md:col-span-7 h-[400px] w-full map-container">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2994.463283626127!2d36.2625752!3d41.3323083!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4087e5898d073993%3A0xc324701e6997426a!2zS8O2cmZleiwgxLBuw7Zuw7wgQmx2LiBObzozMCwgNTUyNzAgQXRha3VtL1NhbXN1bg!5e0!3m2!1str!2str!4v1705410000000!5m2!1str!2str" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                <div class="md:col-span-7 h-[450px] w-full map-container reveal-image overflow-hidden rounded-lg">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2994.463283626127!2d36.2625752!3d41.3323083!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4087e5898d073993%3A0xc324701e6997426a!2zS8O2cmZleiwgxLBuw7Zuw7wgQmx2LiBObzozMCwgNTUyNzAgQXRha3VtL1NhbXN1bg!5e0!3m2!1str!2str!4v1705410000000!5m2!1str!2str" 
+                        width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy">
+                    </iframe>
                 </div>
             </div>
         </section>
 
         <footer class="bg-mb-dark py-12 border-t border-mb-gray/20">
-            <div class="max-w-7xl mx-auto px-6 text-center text-gray-500 text-sm">© 2024 MBFitclub.</div>
+            <div class="max-w-7xl mx-auto px-6 text-center text-gray-500 text-sm">© 2024 MBFitclub. Tüm Hakları Saklıdır.</div>
         </footer>
     </main>
 
     <script>
         gsap.registerPlugin(ScrollTrigger);
+        
+        const bgImages = document.querySelectorAll('.hero-bg-image');
+        let currentImg = 0;
+        
+        function rotateBackground() {
+            bgImages[currentImg].classList.remove('active');
+            currentImg = (currentImg + 1) % bgImages.length;
+            bgImages[currentImg].classList.add('active');
+        }
+        
+        if(bgImages.length > 0) {
+            setInterval(rotateBackground, 6000);
+        }
+
         window.addEventListener('load', () => {
             const tl = gsap.timeline();
             tl.to(".loader-text", { y: 0, opacity: 1, duration: 1 })
-              .to("#loader", { yPercent: -100, duration: 1.2, ease: "expo.inOut", delay: 1 })
+              .to(".loader-sub", { y: 0, opacity: 1, duration: 0.8 }, "-=0.5")
+              .to("#loader", { yPercent: -100, duration: 1.2, ease: "expo.inOut", delay: 0.5 })
               .to("#main-content", { opacity: 1, duration: 0.5 }, "-=0.5")
-              .to(".hero-line h1, .hero-line h2, .hero-line p", { y: 0, duration: 1, stagger: 0.1 });
+              .to(".hero-line h1, .hero-line h2, .hero-line p", { y: 0, duration: 1, stagger: 0.1, ease: "power4.out" })
+              .to(".hero-btn", { opacity: 1, y: 0, duration: 0.8 }, "-=0.5");
             
             document.body.classList.remove('loading');
         });
 
         const menuBtn = document.getElementById('menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
-        menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('open'));
-        document.querySelectorAll('.mobile-link').forEach(l => l.addEventListener('click', () => mobileMenu.classList.remove('open')));
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('open');
+            document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : 'auto';
+        });
+
+        gsap.utils.toArray('.reveal-trigger').forEach(el => {
+            gsap.from(el.children, {
+                y: 50, opacity: 0, duration: 1, stagger: 0.2, scrollTrigger: { trigger: el, start: "top 85%" }
+            });
+        });
+
+        gsap.from('.card-reveal', {
+            y: 50, opacity: 0, duration: 1, stagger: 0.2, scrollTrigger: { trigger: '#classes', start: "top 75%" }
+        });
     </script>
 </body>
 </html>
